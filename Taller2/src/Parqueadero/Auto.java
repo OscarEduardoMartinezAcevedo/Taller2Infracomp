@@ -22,15 +22,22 @@ public class Auto extends Thread {
         while (true) {
             if (parqueadero.entrar(id)) {
                 try {
-                    Thread.sleep(random.nextInt(5000) + 1000);
+                    Thread.sleep(random.nextInt(5000) + 1000); // Simula tiempo de estacionamiento
                 } catch (InterruptedException e) {
-                    e.printStackTrace();
+                    Thread.currentThread().interrupt();
+                    System.err.println("Auto " + id + " interrumpido mientras estaba estacionado.");
                 }
                 parqueadero.salir(id);
                 break;
             } else {
                 if (!esperaActiva) {
-                    Thread.yield();
+                    Thread.yield(); // Espera semi-pasiva: cede CPU
+                } else {
+                    try {
+                        Thread.sleep(10); // Espera activa: intenta repetidamente con una pausa mínima
+                    } catch (InterruptedException e) {
+                        Thread.currentThread().interrupt();
+                    }
                 }
             }
         }
