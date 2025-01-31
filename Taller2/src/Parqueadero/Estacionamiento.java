@@ -12,14 +12,19 @@ public class Estacionamiento {
 
     public synchronized boolean entrar(int id) {
     	System.out.println("El auto numero " + id + " llego");
-        while (espaciosDisponibles == 0) {
-        	System.out.println("El auto numero " + id + " no encontro donde meterse y comienza a esperar");
+        if (espaciosDisponibles == 0) { // Si no hay espacio, retorna false
+            System.out.println("El auto numero " + id + " no encontró espacio y comienza a esperar");
             try {
-                wait();
-                System.out.println("El conductor del auto numero " + id + " empieza a estresarse");
+                wait(); // El auto espera hasta que haya espacio
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                Thread.currentThread().interrupt();
+                System.out.println("El auto número " + id + " fue interrumpido mientras esperaba");
+                return false;
             }
+            // Si despierta, vuelve a verificar si hay espacio antes de continuar
+            if (espaciosDisponibles == 0) {
+                return false; // Si aún no hay espacio, permite que `Auto.run()` maneje la espera
+          }
         }
         espaciosDisponibles--;
         System.out.println("El auto numero " + id + " ya se estaciono");
