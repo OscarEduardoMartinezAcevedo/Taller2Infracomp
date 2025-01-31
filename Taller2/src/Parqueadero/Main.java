@@ -36,3 +36,9 @@ public class Main {
         }
     }
 }
+/* Aunque a travez de la consola no sea tan evidente las diferencias entre activa y semiactiva, si lo hay,
+ * pues en el caso de la activa los autos estan en espera intentando entrar sin detenerse (como se espera 
+ * en este tipo de espera), mientras en la semi-pasiva los autos no estén intentando entrar constantemente
+ * sin dormir, sino que toman un pequeño descanso liberando asi el control, lo que permite una carga menor
+ * a la cpu.
+*/
